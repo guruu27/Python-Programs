@@ -1,16 +1,31 @@
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
-        rows= collections.defaultdict(set)
-        cols= collections.defaultdict(set)
-        squares = collections.defaultdict(set)
-
+        #Validate row
         for i in range(9):
+            s=set()
             for j in range(9):
-                if board[i][j]==".":
-                    continue
-                if (board[i][j] in rows) or (board[i][j] in cols) or (board[i][j] in squares[(i//3,j//3)]):
+                if board[i][j] in s:
                     return False
-                rows[i].add(board[i][j])
-                cols[j].add(board[i][j])
-                squares[(i//3,j//3)].add(board[i][j])
+                elif board[i][j]!='.':
+                    s.add(board[i][j])
+        #Validate col
+        for i in range(9):
+            s=set()
+            for j in range(9):
+                if board[j][i] in s:
+                    return False
+                elif board[j][i]!='.':
+                    s.add(board[j][i])
+        #Validate 3*3 box
+        starts = [(0,0),(0,3),(0,6),
+                  (3,0),(3,3),(3,6),
+                  (6,0),(6,3),(6,6)]
+        for i,j in starts:
+            s = set()
+            for row in range(i,i+3):
+                for col in range(j,j+3):
+                    if board[row][col] in s:
+                        return False
+                    elif board[row][col]!='.':
+                        s.add(board[row][col])
         return True
